@@ -9,41 +9,44 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      # 1. Checkout code
+      # 1️⃣ Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      # 2️⃣ Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
 
-      # 2. Install dependencies: Docker & Minikube
+      # 3️⃣ Install dependencies
       - name: Install dependencies
+        run: npm ci
+
+      # 4️⃣ Install Minikube
+      - name: Install Minikube
         run: |
-          sudo apt-get update
-          sudo apt-get install -y curl docker.io conntrack
           curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
           sudo install minikube-linux-amd64 /usr/local/bin/minikube
 
-      # 3. Start Minikube
+      # 5️⃣ Start Minikube and use its Docker daemon
       - name: Start Minikube
         run: |
           minikube start --driver=docker --kubernetes-version=v1.27.0
-          # Configure Docker to use Minikube daemon
           eval $(minikube -p minikube docker-env)
 
-      # 4. Build Docker image directly inside Minikube
+      # 6️⃣ Build Docker image inside Minikube
       - name: Build Docker image
-        run: |
-          docker build -t nextjs-app:latest .
+        run: docker build -t nextjs-app:latest .
 
-      # 5. Apply Kubernetes manifests
-      - name: Deploy to Minikube
+      # 7️⃣ Deploy to Kubernetes
+      - name: Deploy to Kubernetes
         run: |
           kubectl apply -f k8s/deployment.yaml
           kubectl rollout status deployment/nextjs-deployment
 
-      # 6. Expose service URL
+      # 8️⃣ Print service URL (optional)
       - name: Get Service URL
-        run: |
-          minikube service nextjs-service --url
+        run: minikube service nextjs-service --url
