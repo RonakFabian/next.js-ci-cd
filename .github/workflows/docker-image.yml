@@ -15,32 +15,58 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2️⃣ Install dependencies
+      # 2️⃣ Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      # 3️⃣ Cache node_modules
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: next.js-ci-cd/node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('next.js-ci-cd/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
+      # 4️⃣ Install dependencies
       - name: Install dependencies
+        working-directory: next.js-ci-cd
         run: npm install
 
-      # 3️⃣ Install Minikube
+      # 5️⃣ Cache Next.js build
+      - name: Cache Next.js build
+        uses: actions/cache@v3
+        with:
+          path: next.js-ci-cd/.next/cache
+          key: ${{ runner.os }}-next-cache-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-next-cache-
+
+      # 6️⃣ Install Minikube
       - name: Install Minikube
         run: |
           curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
           sudo install minikube-linux-amd64 /usr/local/bin/minikube
 
-      # 4️⃣ Start Minikube and use its Docker daemon
+      # 7️⃣ Start Minikube and configure Docker
       - name: Start Minikube
         run: |
           minikube start --driver=docker --kubernetes-version=v1.27.0
           eval $(minikube -p minikube docker-env)
 
-      # 5️⃣ Build Docker image inside Minikube
+      # 8️⃣ Build Docker image inside Minikube
       - name: Build Docker image
+        working-directory: next.js-ci-cd
         run: docker build -t nextjs-app:latest .
 
-      # 6️⃣ Deploy to Kubernetes
+      # 9️⃣ Deploy to Kubernetes
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f k8s/deployment.yaml
           kubectl rollout status deployment/nextjs-deployment
 
-      # 7️⃣ Print service URL (optional)
+      # 🔟 Optional: Print service URL
       - name: Get Service URL
         run: minikube service nextjs-service --url
