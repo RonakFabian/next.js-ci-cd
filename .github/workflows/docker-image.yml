@@ -15,40 +15,32 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      ## Before
-      - name: Install dependencies
-        run: npm ci
-
-      # After
+      # 2️⃣ Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # 3️⃣ Install dependencies
-      - name: Install dependencies
-        run: npm ci
-
-      # 4️⃣ Install Minikube
+      # 3️⃣ Install Minikube
       - name: Install Minikube
         run: |
           curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
           sudo install minikube-linux-amd64 /usr/local/bin/minikube
 
-      # 5️⃣ Start Minikube and use its Docker daemon
+      # 4️⃣ Start Minikube and use its Docker daemon
       - name: Start Minikube
         run: |
           minikube start --driver=docker --kubernetes-version=v1.27.0
           eval $(minikube -p minikube docker-env)
 
-      # 6️⃣ Build Docker image inside Minikube
+      # 5️⃣ Build Docker image inside Minikube
       - name: Build Docker image
         run: docker build -t nextjs-app:latest .
 
-      # 7️⃣ Deploy to Kubernetes
+      # 6️⃣ Deploy to Kubernetes
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f k8s/deployment.yaml
           kubectl rollout status deployment/nextjs-deployment
 
-      # 8️⃣ Print service URL (optional)
+      # 7️⃣ Print service URL (optional)
       - name: Get Service URL
         run: minikube service nextjs-service --url
