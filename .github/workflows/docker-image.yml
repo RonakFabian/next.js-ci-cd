@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:   
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -13,6 +13,9 @@ jobs:
       # 1. Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Set up Docker
+        uses: docker/setup-docker@v3
 
       # 2. Install dependencies: Docker & Minikube
       - name: Install dependencies
