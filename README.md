@@ -131,7 +131,7 @@ next.js-ci-cd/
     docker push $REPO_NAME:$SHORT_SHA
   ```
 
-# - [Docker Setup](#-docker-setup)
+# [Docker Setup](#-docker-setup)
 ## Dependancy-
 Stage 1: Install dependencies including devDependencies.
 ```
@@ -191,7 +191,6 @@ CMD ["npx", "next", "start", "-p", "80"]
 
 # [Kubernetes](#-Kubernetes)
 Kubernetes Local Setup with Minikube
-# Minikube
 ## Setup Minikube
 Start Minikube: (Using dockerized version)
 ```
