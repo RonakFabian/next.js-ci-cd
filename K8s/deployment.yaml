@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: nextjs-container
-          image: nextjs-app:latest
+          image: ghcr.io/ronakfabian/nextjs-ci-cd:a5a3f85
           ports:
             - containerPort: 80

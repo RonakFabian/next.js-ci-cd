@@ -68,28 +68,28 @@ jobs:
           name: Depcheck report
           path: ${{github.workspace}}/reports
 
-      # # Log in to GitHub Container Registry
-      # - name: Log in to GitHub Container Registry
-      #   uses: docker/login-action@v3
-      #   with:
-      #     registry: ghcr.io
-      #     username: ${{ github.actor }}
-      #     password: ${{ secrets.GITHUB_TOKEN }}
+      # Log in to GitHub Container Registry
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      # # Build and push Docker image
-      # - name: Build and push Docker image
-      #   run: docker build -t $REPO_NAME:latest ./webapp
+      # Build and push Docker image
+      - name: Build and push Docker image
+        run: docker build -t $REPO_NAME:latest ./webapp
 
-      # # Scane Dockert Image using Trivy
-      # - name: Scan Docker image
-      #   uses: aquasecurity/trivy-action@0.33.1
-      #   with:
-      #     image-ref: ${{ env.REPO_NAME }}:latest
+      # Scane Dockert Image using Trivy
+      - name: Scan Docker image
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          image-ref: ${{ env.REPO_NAME }}:latest
 
-      # # Build and push Docker image
-      # - name: Tag and Push Docker image
-      #   run: |
-      #     SHORT_SHA=${GITHUB_SHA::7}  # first 7 characters of commit SHA
-      #     docker tag $REPO_NAME:latest $REPO_NAME:$SHORT_SHA
-      #     docker push $REPO_NAME:latest
-      #     docker push $REPO_NAME:$SHORT_SHA
+      # Build and push Docker image
+      - name: Tag and Push Docker image
+        run: |
+          SHORT_SHA=${GITHUB_SHA::7}  # first 7 characters of commit SHA
+          docker tag $REPO_NAME:latest $REPO_NAME:$SHORT_SHA
+          docker push $REPO_NAME:latest
+          docker push $REPO_NAME:$SHORT_SHA
