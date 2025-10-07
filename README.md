@@ -3,12 +3,9 @@
 
 - [Project Overview](#project-overview)
 - [Project Structure](#project-structure)
-- [Docker Setup](#docker-setup)
-- [Build & Run with Docker](#️build--run-with-docker)
-- [Push Image to GHCR](#️push-image-to-github-container-registry-ghcr)
-- [Kubernetes Setup (Minikube)](#️kubernetes-setup-minikube)
-- [Example Kubernetes Manifests](#example-kubernetes-manifests)
-- [CI/CD (GitHub Actions)](#️cicd-github-actions)
+- [GitHub Actions Workflow](#github-action)
+  
+
 
 
 ## [Project Overview](#-project-overview)
@@ -19,13 +16,9 @@ This project demonstrates a full CI/CD pipeline for a Next.js application using 
 It includes:
 
 - Building the Next.js app automatically on each push
-
 - Running OWASP dependency checks and saving the report
-
 - Building and scanning a Docker image with Trivy
-
 - Pushing the image to GitHub Container Registry (GHCR)
-
 - Deploying locally on Kubernetes using Minikube
 
 
@@ -50,7 +43,7 @@ next.js-ci-cd/
 ├── 
 └── README.md
 ```
-# GitHub Actions Workflow
+# [GitHub Actions Workflow](#-github-action)
 
 - Checkout repo — fetch your source code
   ```
@@ -64,7 +57,6 @@ next.js-ci-cd/
   uses: actions/setup-node@v4
   with:
     node-version: 20
-
   ```
 
 - Cache node_modules — speeds up CI runs
@@ -74,7 +66,6 @@ next.js-ci-cd/
   with:
     path: ./webapp/node_modules
     key: ${{ runner.os }}-node-${{ hashFiles('webapp/package-lock.json') }}
-
   ```
 
 - Install dependencies  and Lint  
@@ -92,7 +83,6 @@ next.js-ci-cd/
     project: "nextjs-ci-cd"
     path: "./webapp"
     format: "HTML"
-
   ```
 
 - Upload dependency report as an artifact
@@ -102,7 +92,6 @@ next.js-ci-cd/
   with:
     name: Depcheck report
     path: ${{github.workspace}}/reports
-
   ```
 
 - Login to GHCR (docker/login-action)
@@ -113,14 +102,12 @@ next.js-ci-cd/
     registry: ghcr.io
     username: ${{ github.actor }}
     password: ${{ secrets.GITHUB_TOKEN }}
-
   ```
 
 - Build Docker image from webapp/ and tag as ${REPO_NAME}:latest
   ```
   - name: Build and push Docker image
   run: docker build -t $REPO_NAME:latest ./webapp
-
   ```
 
 - Scan image with Trivy 
@@ -129,7 +116,6 @@ next.js-ci-cd/
   uses: aquasecurity/trivy-action@0.33.1
   with:
     image-ref: ${{ env.REPO_NAME }}:latest
-
   ```
 
 - Tag with short SHA (first 7 characters) and push both tags to GHCR
@@ -155,7 +141,6 @@ COPY package.json package-lock.json ./
 
 # Install **all dependencies** including devDependencies for build
 RUN npm ci --include=dev && npm cache clean --force
-
 ```
 ## Builder
 Stage 2: Build Next.js app using Turbopack (Next 15).
@@ -174,7 +159,6 @@ ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1
 
 # Build the app using Turbopack (Next 15)
 RUN npm run build
-
 ```
 ## Runner
 Stage 3: Runtime container using non-root user.
