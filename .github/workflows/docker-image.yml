@@ -58,7 +58,7 @@ jobs:
         id: Depcheck
         with:
           project: "nextjs-ci-cd"
-          path: "./webapp"
+          path: "./webapp/dependency-check-report.html"
           format: "HTML"
 
       # Upload dependency check HTML report as artifact
