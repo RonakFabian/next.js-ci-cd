@@ -54,7 +54,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Docker image
-        run: docker build -t${{env.REPO_NAME}}:latest ./webapp
+        run: docker build -t ${{env.REPO_NAME}}:latest ./webapp
 
       - name: Scan Docker image
         uses: aquasecurity/trivy-action@0.33.1
