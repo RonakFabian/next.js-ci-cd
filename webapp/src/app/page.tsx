@@ -36,8 +36,7 @@ export default function Home() {
           transition={{ delay: 0.3 }}
           className="text-gray-400 leading-relaxed max-w-xl"
         >
-          I work with the React ecosystem and teach people how to rebuild and
-          redefine fundamental concepts through mental models.
+          This is a change to webapp!
         </motion.p>
 
         {/* Buttons */}
