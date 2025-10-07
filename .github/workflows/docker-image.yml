@@ -11,38 +11,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout the repository
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3 # Checkout the repository code
 
-      # 2️⃣ Set up Node.js
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 22
+          node-version: "18" # Specify the Node.js version
 
-      # 3️⃣ Cache node_modules
-      - name: Cache node_modules
-        uses: actions/cache@v3
-        with:
-          path: next.js-ci-cd/node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('next.js-ci-cd/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
-
-      # 4️⃣ Install dependencies
       - name: Install dependencies
-        working-directory: next.js-ci-cd
-        run: npm install
+        run: cd webapp && npm ci # Install project dependencies
 
-      # 5️⃣ Cache Next.js build
-      - name: Cache Next.js build
-        uses: actions/cache@v3
-        with:
-          path: next.js-ci-cd/.next/cache
-          key: ${{ runner.os }}-next-cache-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-next-cache-
+      - name: Build Next.js app
+        run: cd webapp && npm run build
 
       # 6️⃣ Install Minikube
       - name: Install Minikube
