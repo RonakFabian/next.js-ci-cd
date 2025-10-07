@@ -57,7 +57,7 @@ jobs:
         run: docker build -t${{env.REPO_NAME}}:latest ./webapp
 
       - name: Scan Docker image
-        uses: aquasecurity/trivy-action@v2.*
+        uses: aquasecurity/trivy-action@v2v0.33.1
         with:
           image-ref: ${{env.REPO_NAME}}:latest
 
