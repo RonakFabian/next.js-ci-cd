@@ -1,57 +1,32 @@
-name: CI/CD Next.js -> Minikube
+name: Build and Push Docker Image
 
 on:
   push:
-    branches:
-      - main
-  workflow_dispatch:
+    branches: [main] # Trigger workflow on push to main
 
 jobs:
-  build-and-deploy:
+  build-and-push:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./webapp
+
+    permissions:
+      contents: read
+      packages: write # Needed for GHCR
 
     steps:
+      # 1️⃣ Checkout the repository
       - name: Checkout code
-        uses: actions/checkout@v3 # Checkout the repository code
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18" # Specify the Node.js version
+      # 2️⃣ Log in to GitHub Container Registry
+      - name: Log in to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Install dependencies
-        run: npm ci # Install project dependencies
-
-      - name: Build Next.js app
-        run: npm run build
-
-      - name: Start Minikube
-        uses: medyagh/setup-minikube@master # Or use shell commands
-        with:
-          minikube-version: "latest"
-          kubernetes-version: "latest"
-          driver: "docker"
-
-      # 7️⃣ Start Minikube and configure Docker
-      - name: Start Minikube
-        run: |
-          minikube start --driver=docker --kubernetes-version=v1.27.0
-          eval $(minikube -p minikube docker-env)
-
-      # 8️⃣ Build Docker image inside Minikube
+      # 3️⃣ Build Docker image (Next.js app)
       - name: Build Docker image
-        working-directory: next.js-ci-cd
-        run: docker build -t nextjs-app:latest .
-
-      # 9️⃣ Deploy to Kubernetes
-      - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f k8s/deployment.yaml
-          kubectl rollout status deployment/nextjs-deployment
+          docker build -t ghcr.io/${{ github.repository_owner }}/nextjs-app:latest .
 
-      # 🔟 Optional: Print service URL
-      - name: Get Service URL
-        run: minikube service nextjs-service --url
+      # 4️⃣ Push Docker image to GHCR
+      - name: Push Docker image
+        run: |
+          docker push ghcr.io/${{ github.repository_owner }}/nextjs-app:latest
