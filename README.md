@@ -3,7 +3,7 @@
 
 - [Project Overview](#project-overview)
 - [Project Structure](#project-structure)
-- [GitHub Actions Workflow](#github-action)
+- [GitHub Actions Workflow](#github-actions-workflow)
   
 
 
@@ -43,7 +43,7 @@ next.js-ci-cd/
 ├── 
 └── README.md
 ```
-# [GitHub Actions Workflow](#-github-action)
+# [GitHub Actions Workflow](#-github-actions-workflow)
 
 - Checkout repo — fetch your source code
   ```
