@@ -24,7 +24,14 @@ jobs:
         with:
           node-version: 20
 
-      # 3️⃣ Install dependencies
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          path: ./webapp/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('webapp/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install dependencies
         run: npm ci
         working-directory: ./webapp
@@ -47,6 +54,14 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Docker image
+        run: docker build -t ghcr.io/ronakfabian/nextjs-ci-cd:latest ./webapp
+
+      - name: Scan Docker image
+        uses: aquasecurity/trivy-action@v2
+        with:
+          image-ref: ghcr.io/ronakfabian/nextjs-ci-cd:latest
+
+      - name: Build and push Docker image
         run: |
-          docker build -t ghcr.io/ronakfabian/nextjs-ci-cd:latest ./webapp
-          docker push ghcr.io/ronakfabian/nextjs-ci-cd:latest
+          docker ${{env.REPO_NAME}}:latest ${{env.REPO_NAME}}:${{ github.sha }}
+          docker push ${{env.REPO_NAME}}:${{ github.sha }}
