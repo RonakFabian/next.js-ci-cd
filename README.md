@@ -4,6 +4,9 @@
 - [Project Overview](#project-overview)
 - [Project Structure](#project-structure)
 - [GitHub Actions Workflow](#github-actions-workflow)
+- [Docker Setup](#docker-setup)
+- [Kubernetes](#Kubernetes)
+
   
 
 
@@ -128,7 +131,7 @@ next.js-ci-cd/
     docker push $REPO_NAME:$SHORT_SHA
   ```
 
-# Docker Setup
+# - [Docker Setup](#-docker-setup)
 ## Dependancy-
 Stage 1: Install dependencies including devDependencies.
 ```
@@ -186,7 +189,7 @@ EXPOSE 80
 CMD ["npx", "next", "start", "-p", "80"]
 ```
 
-# Kubernetes 
+# [Kubernetes](#-Kubernetes)
 Kubernetes Local Setup with Minikube
 # Minikube
 ## Setup Minikube
