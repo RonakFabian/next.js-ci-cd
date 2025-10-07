@@ -23,7 +23,7 @@ jobs:
         run: cd webapp && npm ci # Install project dependencies
 
       - name: Build Next.js app
-        run: cd webapp && npm run build
+        run: npm run build
 
       # 6️⃣ Install Minikube
       - name: Install Minikube
