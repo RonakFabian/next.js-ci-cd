@@ -63,7 +63,7 @@ jobs:
 
       # Upload dependency check HTML report as artifact
       - name: Upload Dependency Check HTML report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dependency-check-report
           path: dependency-check-report.html
