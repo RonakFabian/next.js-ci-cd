@@ -1,7 +1,7 @@
 # next.js-ci-cd
 ## 📚 Table of Contents
 
-- [Project Overview](#-project-overview)
+- [Project Overview](#project-overview)
 - [Project Structure](#-project-structure)
 - [Docker Setup](#-docker-setup)
 - [Build & Run with Docker](#️-build--run-with-docker)
@@ -15,7 +15,7 @@
 - [Cleanup](#-cleanup)
 - [Author](#-author)
 
-## [Project Overview](#project-overview)
+## [Project Overview](#-project-overview)
 
 
 
