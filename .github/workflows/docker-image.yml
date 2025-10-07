@@ -87,8 +87,9 @@ jobs:
           image-ref: ${{ env.REPO_NAME }}:latest
 
       # Build and push Docker image
-      - name: Build and push Docker image
+      - name: Tag and Push Docker image
         run: |
+          SHORT_SHA=${GITHUB_SHA::7}  # first 7 characters of commit SHA
+          docker tag $REPO_NAME:latest $REPO_NAME:$SHORT_SHA
           docker push $REPO_NAME:latest
-          docker tag $REPO_NAME:latest $REPO_NAME:${{ github.sha }}
-          docker push $REPO_NAME:${{ github.sha }}
+          docker push $REPO_NAME:$SHORT_SHA
