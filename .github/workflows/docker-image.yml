@@ -49,7 +49,7 @@ jobs:
       #   working-directory: ./webapp
 
       - name: OWASP Dependency Check
-        uses: dependency-check/action@v2.0.1
+        uses: dependency-check/action@v2
         with:
           project: "nextjs-ci-cd"
           scan-path: "./webapp/package-lock.json"
