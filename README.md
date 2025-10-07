@@ -16,8 +16,7 @@
 - [Author](#-author)
 
 ## Project Overview
-[Project Overview](#-project-overview)
-Project Overview
+
 
 This project demonstrates a full CI/CD pipeline for a Next.js application using Docker, GitHub Actions, and Minikube (Kubernetes).
 
@@ -39,6 +38,7 @@ Deploying locally on Kubernetes using Minikube
 next.js-ci-cd/
 ├── webapp/                 # Next.js app source
 │   ├── package.json
+│   ├── Dockerfile
 │   ├── next.config.js
 │   ├── public/
 │   └── pages/
@@ -51,7 +51,7 @@ next.js-ci-cd/
 │   └── workflows/
 │       └── ci.yml          # GitHub Actions workflow
 │
-├── Dockerfile
+├── 
 └── README.md
 ```
 # GitHub Actions Workflow
