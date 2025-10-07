@@ -28,11 +28,12 @@ jobs:
       - name: Build Next.js app
         run: npm run build
 
-      # 6️⃣ Install Minikube
-      - name: Install Minikube
-        run: |
-          curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-          sudo install minikube-linux-amd64 /usr/local/bin/minikube
+      - name: Start Minikube
+        uses: medyagh/setup-minikube@master # Or use shell commands
+        with:
+          minikube-version: "latest"
+          kubernetes-version: "latest"
+          driver: "docker"
 
       # 7️⃣ Start Minikube and configure Docker
       - name: Start Minikube
