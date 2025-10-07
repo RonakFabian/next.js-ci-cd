@@ -2,7 +2,8 @@ name: Build and Push Docker Image
 
 on:
   push:
-    branches: [main] # Trigger workflow on push to main
+    branches:
+      - main # Trigger workflow on push to main branch
 
 jobs:
   build-and-push:
@@ -10,23 +11,19 @@ jobs:
 
     permissions:
       contents: read
-      packages: write # Needed for GHCR
+      packages: write # Required for GHCR
 
     steps:
-      # 1️⃣ Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2️⃣ Log in to GitHub Container Registry
-      - name: Log in to GHCR
+      - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      # 3️⃣ Build Docker image (Next.js app)
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/nextjs-app:latest .
+          docker build -t ghcr.io/${{ github.repository_owner }}/next.js-ci-cd:latest .
 
-      # 4️⃣ Push Docker image to GHCR
-      - name: Push Docker image
+      - name: Push Docker image to GHCR
         run: |
-          docker push ghcr.io/${{ github.repository_owner }}/nextjs-app:latest
+          docker push ghcr.io/${{ github.repository_owner }}/next.js-ci-cd:latest
