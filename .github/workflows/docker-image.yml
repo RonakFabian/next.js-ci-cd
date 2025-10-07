@@ -61,7 +61,7 @@ jobs:
       - name: Scan Docker image
         uses: aquasecurity/trivy-action@0.33.1
         with:
-          image-ref: $REPO_NAME:latest
+          image-ref: ${{ env.REPO_NAME }}:latest
 
       - name: Build and push Docker image
         run: |
