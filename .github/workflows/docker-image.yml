@@ -9,6 +9,9 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./webapp
 
     steps:
       - name: Checkout code
@@ -20,7 +23,7 @@ jobs:
           node-version: "18" # Specify the Node.js version
 
       - name: Install dependencies
-        run: cd webapp && npm ci # Install project dependencies
+        run: npm ci # Install project dependencies
 
       - name: Build Next.js app
         run: npm run build
