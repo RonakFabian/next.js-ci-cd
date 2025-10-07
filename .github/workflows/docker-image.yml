@@ -48,11 +48,13 @@ jobs:
       #   run: npm test
       #   working-directory: ./webapp
 
-      - name: OWASP Dependency Check
-        uses: dependency-check/action@v2
+      - name: Run OWASP Dependency-Check
+        uses: dependency-check/Dependency-Check_Action@main
+        id: Depcheck
         with:
           project: "nextjs-ci-cd"
-          scan-path: "./webapp/package-lock.json"
+          path: "./webapp" # Scans the entire repository
+          format: "HTML,JSON" # Generates both HTML and JSON reports
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
