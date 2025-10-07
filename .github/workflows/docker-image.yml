@@ -63,5 +63,5 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker ${{env.REPO_NAME}}:latest ${{env.REPO_NAME}}:${{ github.sha }}
+          docker tag ${{env.REPO_NAME}}:latest ${{env.REPO_NAME}}:${{ github.sha }}
           docker push ${{env.REPO_NAME}}:${{ github.sha }}
