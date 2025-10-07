@@ -15,7 +15,8 @@
 - [Cleanup](#-cleanup)
 - [Author](#-author)
 
-## Project Overview
+## [Project Overview](#project-overview)
+
 
 
 This project demonstrates a full CI/CD pipeline for a Next.js application using Docker, GitHub Actions, and Minikube (Kubernetes).
